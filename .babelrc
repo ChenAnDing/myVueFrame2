@@ -1,0 +1,21 @@
+{
+    "presets": [
+        ["@babel/preset-env", {
+            // 这儿有false, entry, usage三个可选参数，usage可以按需引入polyfill
+            "useBuiltIns": "usage", // 在每个文件中使用polyfill时，为polyfill添加特定导入。利用捆绑器只加载一次相同的polyfill。
+            // 指定corejs版本
+            "corejs": 3,
+            // @babel/presets-env中配置为modules: false，原因是 @babel/presets-env会自动将ES6 Module转化为CommonJS形式，会导致Webpack中的tree-shaking特性失效，
+            // 而将modules配置为false后会禁用模块化语句的转化，将Module的语法交给Webpack本身去处理，来避免这一问题的发生。
+            "modules": false,
+            // 浏览器兼容
+            "targets": {
+                "browsers": "last 2 versions, not ie <= 9"
+            }
+        }]
+    ],
+    // syntax-dynamic-import:使用vue官方的懒加载语法并结合babel需使用这个插件，不然会报错
+    // 由于 babel 默认只转换 ES6 新语法，不转换新的 API，如：Set、Map、Promise等，所以需要安装 @babel/polyfill 
+    // 转换新 API。安装 @babel/plugin-transform-runtime 优化代码，@babel/plugin-transform-runtime 是一个可以重复使用 Babel 注入的帮助程序代码来节省代码的插件。
+    "plugins": ["@babel/plugin-transform-runtime","@babel/plugin-syntax-dynamic-import"]
+}
